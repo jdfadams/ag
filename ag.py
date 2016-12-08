@@ -5,8 +5,11 @@ from bs4 import BeautifulSoup
 
 
 def abstract_from_arxiv(arxiv_id):
+    """Return the title, authors, abstract, and PDF url for the arXiv ID."""
     address = "http://arxiv.org/abs/" + arxiv_id
     r = requests.get(address)
+    r.raise_for_status()
+    
     soup = BeautifulSoup(r.text, "html.parser")  # Or lxml?
     
     title_f = soup.find("meta", attrs={"name": "citation_title"})
@@ -42,13 +45,15 @@ def main():
         if args.pdf:
             filename = "arXiv-" + "-".join(args.arXivID.split("/")) + ".pdf"
             print("Downloading PDF as \"{}\"...".format(filename))
+            
             pdf = requests.get(pdf_url, stream=True)
+            pdf.raise_for_status()
+            
             with open(filename, "wb") as file:
                 for chunk in pdf.iter_content(2000):
-                    file.write(chunk)
-        
-    except Exception as error:
-        print(error)
+                    file.write(chunk)    
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":
