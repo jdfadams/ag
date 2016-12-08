@@ -1,4 +1,5 @@
-#! usr/bin/env python3
+#! /usr/bin/env python
+"""A module for obtaining arXiv data using the ID."""
 import requests
 from bs4 import BeautifulSoup
 
@@ -26,8 +27,8 @@ def abstract_from_arxiv(arxiv_id):
 def main():
     import argparse
     parser = argparse.ArgumentParser(
-        description="get the abstract from an arXiv ID")
-    parser.add_argument("-p", "--pdf", action="store_true", help="get PDF")
+        description="get data from arXiv using the ID")
+    parser.add_argument("-p", "--pdf", action="store_true", help="download the PDF")
     parser.add_argument("arXivID", help="the arXiv ID")
     args = parser.parse_args()
     try:
